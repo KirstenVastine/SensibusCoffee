@@ -13,6 +13,7 @@ import { Route, Link, Redirect } from "react-router-dom";
 //import VerifiedUserView from "../VerifiedUserView/VerifiedUserView";
 import API_URL from "../../environment";
 //import { ReactComponent } from "*.svg";
+//import Link from '@material-ui/core/Link';
 
 
 const styles = {
@@ -27,25 +28,31 @@ const styles = {
   },
 };
 
+// type Props = {
+
+//   history: any
+// }
 type Props = {
-  
-}
+  history: any;
+};
+
 
 
 type States = {
-  
+
   firstName: string,
   lastName: string,
   email: string,
   password: string,
   sessionToken: string,
   signup: boolean
+  
 }
 
 
 
 
-class Auth extends React.Component <Props, States> {
+class Auth extends React.Component<Props, States> {
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -67,42 +74,51 @@ class Auth extends React.Component <Props, States> {
       password: this.state.password
     };
 
-  //   const requestOptions = {
-  //     method: 'POST',
-  //     //mode: 'no-cors',
-  //     headers: myHeaders,
-  //     body: JSON.stringify(payLoad),
-  //     redirect: 'follow'
-  //   };
+    //   const requestOptions = {
+    //     method: 'POST',
+    //     //mode: 'no-cors',
+    //     headers: myHeaders,
+    //     body: JSON.stringify(payLoad),
+    //     redirect: 'follow'
+    //   };
 
-  //   var myHeaders = new Headers();
-  //   myHeaders.append("Content-Type", "application/json");
+    //   var myHeaders = new Headers();
+    //   myHeaders.append("Content-Type", "application/json");
 
-  //   console.log('Before stringify',payLoad);
+    //   console.log('Before stringify',payLoad);
 
-    fetch(`${API_URL}/user/signup`,{
-        method: 'POST',
-        //mode:'no-cors',
-        body: JSON.stringify(payLoad),
-        headers: new Headers({
-          'Content-Type': 'application/json'
-        })
-      } ) .then(
-        (response) => response.json()
-
-      ).then((json) => {
-        // this.state.sessionToken(json)
-        console.log(json)
+    fetch(`${API_URL}/user/signup`, {
+      method: 'POST',
+      //mode:'no-cors',
+      body: JSON.stringify(payLoad),
+      headers: new Headers({
+        'Content-Type': 'application/json'
       })
-    };    
+    }).then(
+      (response) => response.json()
 
-  
+    ).then((json) => {
+      if (json.message === "user was created successfully") {
+        // this.state.sessionToken(json)
+        localStorage.setItem('token', json.sessionToken);
+        this.props.history.replace('/coffee');
+      }
+      console.log(json)
 
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    })
+
+      .catch((err) => (console.log(err)))
+  };
+
+  // handleChange = (event: any) => {
+  //   console.log('success')
+  // }
+  //handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleChange = (event: any) => {
     const value = event.currentTarget.value;
-   // const state = { ...this.state };
-    //state[event.currentTarget.name] = value;
-    this.setState({[event.target.name]: event.currentTarget.value});
+   const state:any = { ...this.state };
+    state[event.currentTarget.name] = value;
+    this.setState(state);
   }
 
   signInToken = () => {
@@ -205,7 +221,7 @@ class Auth extends React.Component <Props, States> {
                 fullWidth
                 id="firstName"
                 label="First Name"
-                onChange={(e) => { this.handleChange(e); console.log(this.state.firstName)}}
+                onChange={(e) => { this.handleChange(e); console.log(this.state.firstName) }}
                 value={this.state.firstName}
                 name="firstName"
                 autoComplete="firstName"
@@ -219,7 +235,7 @@ class Auth extends React.Component <Props, States> {
                 id="lastName"
                 label="Last Name"
                 //onChange={(e) => this.setState({ lastName: e.target.value })}
-                onChange={(e) => {this.handleChange(e); console.log(this.state.lastName)}}
+                onChange={(e) => { this.handleChange(e); console.log(this.state.lastName) }}
                 value={this.state.lastName}
                 name="lastName"
                 autoComplete="lastName"
@@ -233,7 +249,7 @@ class Auth extends React.Component <Props, States> {
                 id="email"
                 label="Email"
                 //onChange={(e) => this.setState({ email: e.target.value })}
-                onChange={(e) => {this.handleChange(e); console.log(this.state.email)}}
+                onChange={(e) => { this.handleChange(e); console.log(this.state.email) }}
                 value={this.state.email}
                 name="email"
                 autoComplete="email"
@@ -248,7 +264,7 @@ class Auth extends React.Component <Props, States> {
                 label="Password"
                 type="password"
                 //onChange={(e) => this.setState({ password: e.target.value })}
-                onChange={(e) => {this.handleChange(e); console.log(this.state.password)}}
+                onChange={(e) => { this.handleChange(e); console.log(this.state.password) }}
                 value={this.state.password}
                 id="password"
                 autoComplete="current-password"
@@ -267,7 +283,7 @@ class Auth extends React.Component <Props, States> {
               <Grid container className="signInText">
 
                 <Grid item >
-                  <Link to="/login" variant="body2">
+                  <Link to="/login" >
                     {"Already have an account? Sign In"}
                   </Link>
                 </Grid>
@@ -279,7 +295,7 @@ class Auth extends React.Component <Props, States> {
           {console.log(this.state.password)}
         </Container>
         <div>
-          {this.checkForToken()}
+          {this.checkForToken}
         </div>
 
       </div>

@@ -22,9 +22,44 @@
     position: relative;
 }
 
-.copyright{
-  
+.reviewFormCard{
+  margin-left: auto;
+  margin-right:auto;
+  display:flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  position: absolute;
+  top:25%;
+  left:50%;
+  transform: translateX(-50%);
+  width: 30vw;
 }
+
+.reviewButton{
+  display: flex;
+  /* justify-content: right; */
+  /* transform: translateX(-50%); */
+  right: -75%;
+  /* margin: auto 50px 50px auto; */
+  margin-bottom: 20px;
+  margin-right: 20px;
+}
+
+/* .mainCoffee {
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+} */
+
+/* .copyright{
+  
+} */
 
 /* .App {
   text-align: center;

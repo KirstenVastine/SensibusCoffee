@@ -1,6 +1,6 @@
-import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
+import React from "react";
+import TextField from "@material-ui/core/TextField";
+import { makeStyles } from "@material-ui/core/styles";
 
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -11,56 +11,84 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { Route, Link, Redirect } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
-import coffeepik from '../../Assets/CoffeeBean.jpeg';
-import CopyrightIcon from '@material-ui/icons/Copyright';
-
-
-
-
+import coffeepik from "../../Assets/CoffeeBean.jpeg";
+import CopyrightIcon from "@material-ui/icons/Copyright";
+import API_URL from "../../environment";
+import { PostAdd } from "@material-ui/icons";
 
 class Practice extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {username: '', password: ''}
-    }
-
-
-    // componentDidUpdate() {
-       
-    // }
-
-
-    handleSubmit () {
-        console.log(this.state.username)
-        console.log(this.state.password)
-    }
-
-    handleChange = (event) =>{
-      event.preventDefault();
-      const value = event.currentTarget.value;
-      const state = { ...this.state };
-      state[event.currentTarget.name] = value;
-      this.setState(state);
+  constructor(props) {
+    super(props);
+    this.state = { email: "", password: "" };
   }
 
-    render() {
-        const FormPropsTextFields = () => {
+  // componentDidUpdate() {
 
-           const useStyles = makeStyles((theme) => ({
-                root: {
-                    '& .MuiTextField-root': {
-                        margin: theme.spacing(1),
-                        width: '25ch',
-                    }
-                }
-            }))
-            const classes = useStyles()
+  // }
 
-            return (
-                 <div className="mainDiv">
-                     <img src={coffeepik} className="LandingPik"/>
-                
-                {/* < form className={classes.root} noValidate autoComplete="off" >
+  handleSubmit = (event) => {
+    event.preventDefault();
+    const { email, password } = this.state;
+
+    const user = {
+      user: {
+        email: email,
+        password: password,
+      },
+    };
+
+    fetch(`${API_URL}/user/login`, {
+      method: "POST",
+      body: JSON.stringify(user),
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
+    })
+      .then((response) => response.json())
+      .then((loginResponse) => {
+        // if the response was a success
+        if (loginResponse.message === "successfully authenticated") {
+          // if yes, store the token
+          localStorage.setItem("token", loginResponse.sessionToken);
+          this.props.history.replace("/coffee");
+        }
+
+        // the response indicates a login failure
+        // do something
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    console.log(email);
+    console.log(password);
+  };
+
+  handleChange = (event) => {
+    event.preventDefault();
+    const value = event.currentTarget.value;
+    const state = { ...this.state };
+    state[event.currentTarget.name] = value;
+    this.setState(state);
+  };
+
+  render() {
+    const FormPropsTextFields = () => {
+      const useStyles = makeStyles((theme) => ({
+        root: {
+          "& .MuiTextField-root": {
+            margin: theme.spacing(1),
+            width: "25ch",
+          },
+        },
+      }));
+      const classes = useStyles();
+
+      return (
+        <div className="mainDiv">
+          <img src={coffeepik} className="LandingPik" />
+
+          {/* < form className={classes.root} noValidate autoComplete="off" >
                     <div>
                         <TextField onChange={(e) => this.state.username = (e.target.value)} required id="standard-required" label="Required" defaultValue="Hello World" />
                         <TextField disabled id="standard-disabled" label="Disabled" defaultValue="Hello World" />
@@ -73,26 +101,27 @@ class Practice extends React.Component {
                     </div>
                 </form > */}
 
- 
-<Container className="signin" component="main" maxWidth="xs">
-      <CssBaseline />
-     
-      <div className={classes.paper}>
-        <Typography component="h1" variant="h3">
-          Sensibus Coffee
-        </Typography>
-        <br/>
-        <br/>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <form 
-        //onSubmit={handleSubmit} className={classes.form} noValidate
-        >
-          {/* <TextField
+          <Container className="signin" component="main" maxWidth="xs">
+            <CssBaseline />
+
+            <div className={classes.paper}>
+              <Typography component="h1" variant="h3">
+                Sensibus Coffee
+              </Typography>
+              <br />
+              <br />
+              <Avatar className={classes.avatar}>
+                <LockOutlinedIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                Sign in
+              </Typography>
+              <form
+                onSubmit={this.handleSubmit}
+                className={classes.form}
+                noValidate
+              >
+                {/* <TextField
             variant="outlined"
             margin="normal"
             required
@@ -121,87 +150,77 @@ class Practice extends React.Component {
             
           /> */}
 
-<TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email"
-                onChange={(e) => this.setState({ email: e.target.value })}
-                value={this.state.email}
-                name="email"
-                autoComplete="email"
-                autoFocus
-              />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                onChange={(e) => this.setState({ password: e.target.value })}
-                value={this.state.password}
-                id="password"
-                autoComplete="current-password"
-                //autoFocus
-              />
-  
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            //className={classes.submit}
-          >
-            Sign In
-          </Button>
-          <Grid container className= "signInText">
-          
-            <Grid item >
-                <Route>
-              <Link to="/signup" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-              </Route>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email"
+                  onChange={(e) => this.handleChange(e)}
+                  value={this.state.email}
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                />
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  onChange={(e) => this.handleChange(e)}
+                  value={this.state.password}
+                  id="password"
+                  autoComplete="current-password"
+                  //autoFocus
+                />
 
-            </Grid>
-          </Grid>
-        </form>
-      </div>
-      <Box mt={8}></Box>
-      {/* {console.log(props.username)}
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  //className={classes.submit}
+                >
+                  Sign In
+                </Button>
+                <Grid container className="signInText">
+                  <Grid item>
+                    <Route>
+                      <Link to="/signup" variant="body2">
+                        {"Don't have an account? Sign Up"}
+                      </Link>
+                    </Route>
+                  </Grid>
+                </Grid>
+              </form>
+            </div>
+            <Box mt={8}></Box>
+            {/* {console.log(props.username)}
       {console.log(props.password)}
       {console.log(props.userProfile)} */}
-    </Container>
-    <div>
-        <div className="Copyright">
-            <Typography component="h6" variant="h6">
-            <CopyrightIcon fontSize="small" />Copyright KirstenVastine2020
-            </Typography>
-        </div>
-  
-        </div>
-        {/* {checkForToken()} */}
-  
-
-                </div>
-            )
-        }
-        return(
-            <div>
-                <FormPropsTextFields/>
+          </Container>
+          <div>
+            <div className="Copyright">
+              <Typography component="h6" variant="h6">
+                <CopyrightIcon fontSize="small" />
+                Copyright KirstenVastine2020
+              </Typography>
             </div>
-        )
-    
-
-        
-
-        }
+          </div>
+          {/* {checkForToken()} */}
+        </div>
+      );
+    };
+    return (
+      <div>
+        <FormPropsTextFields />
+      </div>
+    );
+  }
 }
-
-
 
 export default Practice;
