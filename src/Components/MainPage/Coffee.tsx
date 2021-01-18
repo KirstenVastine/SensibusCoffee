@@ -3,7 +3,12 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 //import { stringify } from 'querystring';
 import API_URL from "../../environment";
-import { withStyles, WithStyles, createStyles } from "@material-ui/core/styles";
+import {
+  withStyles,
+  WithStyles,
+  createStyles,
+  Theme,
+} from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import { Styles } from "@material-ui/styles";
 import { makeStyles } from "@material-ui/core/styles";
@@ -14,15 +19,21 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import MenuBar from './MenuBar';
 
-const ourUseStyles = makeStyles({
+const styles = {
   root: {
     maxWidth: 345,
+    margin: '10px auto'
   },
   media: {
     height: 140,
   },
-});
+};
+
+//interface Props extends WithStyles<typeof styles> {}
 
 type Props = {
   coffeeOrigin: string;
@@ -31,6 +42,7 @@ type Props = {
   description: string;
   updateToken: any;
   classes: any;
+  history: any
 };
 
 type States = {
@@ -48,18 +60,6 @@ type singleCoffee = {
   coffeeNotes: string;
   price: string;
   description: string;
-};
-
-const styles = {
-  root: {
-    background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
-    border: 0,
-    borderRadius: 3,
-    boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
-    color: "white",
-    height: 48,
-    padding: "0 30px",
-  },
 };
 
 class Coffee extends React.Component<Props, States> {
@@ -134,6 +134,10 @@ class Coffee extends React.Component<Props, States> {
     this.setState({ anchorEl: event.currentTarget });
   };
 
+  handleCoffeeClick = (coffeeId: number) => {
+    this.props.history.push(`/coffee/${coffeeId}`)
+  }
+
   handleClose = () => {
     this.setState({ anchorEl: null });
   };
@@ -149,88 +153,67 @@ class Coffee extends React.Component<Props, States> {
     });
 
   render() {
-    //const { classes } = this.props;
-    const classes: any = this.useStyles();
+    const { classes } = this.props;
+    //const classes: any = this.useStyles();
 
     return (
       <div className="mainCoffee">
-        <Button className={classes.root}>Click</Button>
-        <div>
-          <Button
-            aria-controls="simple-menu"
-            aria-haspopup="true"
-            onClick={this.handleClick}
-          >
-            Open Menu
-          </Button>
-          <Menu
-            id="simple-menu"
-            anchorEl={this.state.anchorEl}
-            keepMounted
-            open={Boolean(this.state.anchorEl)}
-            onClose={this.handleClose}
-          >
-            <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-            <MenuItem onClick={this.handleClose}>My account</MenuItem>
-            <MenuItem onClick={this.handleClose}>Logout</MenuItem>
-          </Menu>
-        </div>
-        {this.state.coffees.length > 0 ? (
-          // <table>
-          //     <thead>
-          //         <tr>
-          //             <th>Origin</th>
-          //             <th>Description</th>
-          //             <th>Price</th>
-          //             <th>Notes</th>
-          //         </tr>
-          //     </thead>
-          //     <tbody>
-          //         {this.state.coffees.map((coffee: any) => (
-          //             <tr>
-          //                 <td>{coffee.coffeeOrigin}</td>
-          //                 <td>{coffee.description}</td>
-          //                 <td>{coffee.price}</td>
-          //                 <td>{coffee.notes}</td>
-          //             </tr>
-          //         ))}
-          //     </tbody>
-          // </table>
-
-          this.state.coffees.map((coffee: any, index: number) => (
-            <Card className={classes.root} key={index}>
-              <CardActionArea>
-                <CardMedia
-                  className={classes.media}
-                  image="https://images.unsplash.com/photo-1580933073521-dc49ac0d4e6a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2249&q=80"
-                  title="Coffee"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {coffee.coffeeOrigin}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
-                    {coffee.notes}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <CardActions>
-                <Button size="small" color="primary">
-                  Add Review
-                </Button>
-                <Button size="small" color="primary">
-                  Learn More
-                </Button>
-              </CardActions>
-            </Card>
-          ))
-        ) : (
-          <span>Nothing!, I have</span>
-        )}
+        {/* <Button className={classes.root}>Click</Button> */}
+        
+        <Grid
+          container
+          // justify="flex-end"
+          // alignContent="center"
+          // alignItems="center"
+          //style={{paddingLeft: '10px'}}
+          spacing={2}
+        >
+          {this.state.coffees.length > 0 ? (
+            this.state.coffees.map((coffee: any, index: number) => (
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                justify="center"
+                alignContent="space-around"
+                alignItems="center"
+              >
+                <Card className={classes.root} key={index}>
+                  <CardActionArea onClick={(e)=> this.handleCoffeeClick (coffee.id)}>
+                    <CardMedia
+                      className={classes.media}
+                      image={coffee.imageURL}
+                      title="Coffee"
+                    />
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="h2">
+                        {coffee.coffeeOrigin}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        component="p"
+                      >
+                        {coffee.notes}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                  <CardActions>
+                    <Button size="small" color="primary">
+                      Add Review
+                    </Button>
+                    <Button size="small" color="primary">
+                      Learn More
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))
+          ) : (
+            <span>Nothing!, I have</span>
+          )}
+        </Grid>
       </div>
     );
   }
@@ -239,4 +222,5 @@ class Coffee extends React.Component<Props, States> {
 //     classes: PropTypes.object.isRequired,
 //   };
 
-export default Coffee;
+//export default Coffee;
+export default withStyles(styles, { withTheme: true })(Coffee);

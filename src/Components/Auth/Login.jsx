@@ -175,8 +175,8 @@ class Practice extends React.Component {
                   value={this.state.password}
                   id="password"
                   autoComplete="current-password"
-                  //autoFocus
-                />
+                  
+                />{/*trying autoFocus in here*/}
 
                 <Button
                   type="submit"

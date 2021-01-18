@@ -9,11 +9,11 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { Route, Link, Redirect } from "react-router-dom";
+//import { Route, Link, Redirect } from "react-router-dom";
 //import VerifiedUserView from "../VerifiedUserView/VerifiedUserView";
 import API_URL from "../../environment";
 //import { ReactComponent } from "*.svg";
-//import Link from '@material-ui/core/Link';
+import Link from '@material-ui/core/Link';
 
 
 const styles = {
@@ -124,7 +124,7 @@ class Auth extends React.Component<Props, States> {
   signInToken = () => {
     if (this.state.sessionToken) {
       return (
-        <Link to="/user"></Link>
+        <Link href="/user"></Link>
       )
     }
   };
@@ -283,7 +283,7 @@ class Auth extends React.Component<Props, States> {
               <Grid container className="signInText">
 
                 <Grid item >
-                  <Link to="/login" >
+                  <Link href="/login" >
                     {"Already have an account? Sign In"}
                   </Link>
                 </Grid>
