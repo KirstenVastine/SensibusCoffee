@@ -76,6 +76,7 @@
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  /* background-repeat: no-repeat; */
   min-height: 100%;
   min-width: 1024px;
  /* width: 100%;
@@ -90,7 +91,9 @@
   z-index: -1;
   padding:0;
   margin:0;
-background-image: url(https://images.unsplash.com/photo-1521435363116-afc12e01b5d4?ixid=MXwxMjA3fDB8MHxzZWFyY2h8NTN8fGNvZmZlZXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60);
+  background-image: url(https://images.unsplash.com/photo-1521435363116-afc12e01b5d4?ixid=MXwxMjA3fDB8MHxzZWFyY2h8NTN8fGNvZmZlZXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60);
+  background-color: black;
+
  /* no-repeat center center fixed; */
 }
 

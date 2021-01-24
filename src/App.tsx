@@ -26,6 +26,10 @@ import TestMUI from './Components/Test/TestMUILogin';
 import TestMuiSignup from './Components/Test/TestMuiSignup';
 import SingleCoffee from './Components/MainPage/SingleCoffee';
 import MenuBar from './Components/MainPage/MenuBar';
+import AppRoute from './Components/Layouts/AppRoute';
+import DefaultLayout from './Components/Layouts/DefaultLayout';
+import MainLayout from './Components/Layouts/MainLayout';
+import CoffeeForm from './Components/Superfluous/CoffeeForm';
 
 
 
@@ -59,7 +63,6 @@ class App extends React.Component {
 
     return (
       <ThemeProvider theme={theme}>
-
         <React.Fragment>
           <CssBaseline />
           {/* The rest of your application */}
@@ -79,34 +82,56 @@ class App extends React.Component {
           Learn React
         </a> */}
               <Router>
-                <MenuBar />
+                {/* <MenuBar /> */}
                 <Switch>
                   {/* <Route path="/login/:name/:age" component={Auth} />
                   <Route path="/login" component={Login} /> */}
                   {/* <Route path="/signup" component={Auth} /> */}
                   {/* <Route path="/review/add" component={ReviewForm} /> */}
-                  <Route path='/coffee/:coffeeId' component={SingleCoffee} />
-                  <Route path="/coffee" render={props => (
-                    <Coffee
-                      coffeeOrigin='coffee'
-                      coffeeNotes='notes'
-                      price='price'
-                      description='desc'
-                      updateToken={() => console.log('updateToken')}
-                      {...props}
-                    />
-                  )} />
-                  
+                  <AppRoute
+                    path="/coffee/:coffeeId"
+                    component={SingleCoffee}
+                    layout={MainLayout}
+                  />
+                  <AppRoute
+                    path="/coffee"
+                    component={(props) => (
+                      <Coffee
+                        coffeeOrigin="coffee"
+                        coffeeNotes="notes"
+                        price="price"
+                        description="desc"
+                        updateToken={() => console.log("updateToken")}
+                        {...props}
+                      />
+                    )}
+                    layout={MainLayout}
+                  />
+
                   {/* <Route path="/notfound" component={NotFound} /> */}
                   {/* <Route path="/" exact component={Auth} /> */}
                   {/* <Redirect from='/' exact to='/signup' /> */}
                   {/* <Redirect to="/notfound" /> */}
                   {/* <Route path="/signup" component={SignupTwo} /> */}
-                  <Route path="/login" component={TestMUI} />
-                  <Route path="/signup" component={TestMuiSignup} />
-                    {/* <Auth /> */}
-                    {/* <Login /> */}
-                    {/* <Coffee
+                  <AppRoute
+                    component={TestMUI}
+                    path="/login"
+                    layout={DefaultLayout}
+                  />
+                  {/* <Route path="/login" component={TestMUI} /> */}
+                  <AppRoute
+                    path="/signup"
+                    component={TestMuiSignup}
+                    layout={DefaultLayout}
+                  />
+                  <AppRoute
+                    path="/coffeeform"
+                    component={CoffeeForm}
+                    layout={MainLayout}
+                    />
+                  {/* <Auth /> */}
+                  {/* <Login /> */}
+                  {/* <Coffee
             coffeeOrigin = 'coffee'
             coffeeNotes = 'notes'
             price = 'price'
@@ -114,20 +139,13 @@ class App extends React.Component {
             updateToken = {() => console.log('updateToken')}
             classes = ''
             /> */}
-                    {/* <Reviews/> */}
-
-                
-
+                  {/* <Reviews/> */}
                 </Switch>
               </Router>
-
-
             </header>
           </div>
         </React.Fragment>
-
       </ThemeProvider>
-
     );
   }
 }

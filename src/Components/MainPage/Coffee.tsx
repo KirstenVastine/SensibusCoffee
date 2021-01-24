@@ -1,16 +1,6 @@
 import React from "react";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-//import { stringify } from 'querystring';
 import API_URL from "../../environment";
-import {
-  withStyles,
-  WithStyles,
-  createStyles,
-  Theme,
-} from "@material-ui/core/styles";
-import PropTypes from "prop-types";
-import { Styles } from "@material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -19,14 +9,12 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import MenuBar from './MenuBar';
 
 const styles = {
   root: {
     maxWidth: 345,
-    margin: '10px auto'
+    margin: "10px auto",
   },
   media: {
     height: 140,
@@ -42,7 +30,7 @@ type Props = {
   description: string;
   updateToken: any;
   classes: any;
-  history: any
+  history: any;
 };
 
 type States = {
@@ -135,8 +123,8 @@ class Coffee extends React.Component<Props, States> {
   };
 
   handleCoffeeClick = (coffeeId: number) => {
-    this.props.history.push(`/coffee/${coffeeId}`)
-  }
+    this.props.history.push(`/coffee/${coffeeId}`);
+  };
 
   handleClose = () => {
     this.setState({ anchorEl: null });
@@ -159,7 +147,7 @@ class Coffee extends React.Component<Props, States> {
     return (
       <div className="mainCoffee">
         {/* <Button className={classes.root}>Click</Button> */}
-        
+
         <Grid
           container
           // justify="flex-end"
@@ -180,7 +168,9 @@ class Coffee extends React.Component<Props, States> {
                 alignItems="center"
               >
                 <Card className={classes.root} key={index}>
-                  <CardActionArea onClick={(e)=> this.handleCoffeeClick (coffee.id)}>
+                  <CardActionArea
+                    onClick={(e) => this.handleCoffeeClick(coffee.id)}
+                  >
                     <CardMedia
                       className={classes.media}
                       image={coffee.imageURL}

@@ -1,7 +1,7 @@
 import { GetApp } from '@material-ui/icons';
 import * as React from 'react';
 import API_URL from '../../../src/environment';
-import { Theme, createStyles, makeStyles, WithStyles, withStyles } from "@material-ui/core/styles";
+import { createStyles, makeStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -10,10 +10,13 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import CoffeeForm from '../Superfluous/CoffeeForm';
+import Theme from '../../Theme';
+import NotFound from '../Superfluous/NotFound';
 
 
 
-// const styles = withStyles((theme: Theme) =>
+// const styles = withStyles((theme:typeof Theme) =>
 //   createStyles({
 //     root: {
 //       display: "flex",
@@ -51,19 +54,20 @@ const styles = {
 
 
 
-type SingleCoffeeProps = {
+type SingleCoffeeProps = WithStyles<typeof styles>  & {
     location: any;
     match: any;
     history: any,
-    classes: any
 }
  
 type SingleCoffeeState = {
   coffee: singleCoffee;
   reviews:any[];
+  open:boolean;
 }
 
 type singleCoffee = {
+    id:number;
   coffeeOrigin: string;
   coffeeNotes: string;
   price: string;
@@ -72,6 +76,7 @@ type singleCoffee = {
 };
  
 const singleCoffeeDefault = {
+    id:0,
   coffeeOrigin: '',
   coffeeNotes: '',
   price: '',
@@ -81,7 +86,7 @@ const singleCoffeeDefault = {
 class SingleCoffee  extends React.Component<SingleCoffeeProps, SingleCoffeeState> {
     constructor(props: SingleCoffeeProps) {
         super(props);
-        this.state = { coffee: singleCoffeeDefault, reviews:[] };
+        this.state = { coffee: singleCoffeeDefault, reviews:[], open:false };
     }
 
     componentDidMount(){
@@ -113,6 +118,13 @@ class SingleCoffee  extends React.Component<SingleCoffeeProps, SingleCoffeeState
         .catch((error) => console.log(error))
     }
 
+    handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    
+    }
+
+    handleToggle = (event:React.SyntheticEvent) :void => {
+        this.setState({open: !this.state.open})
+    }
 
     render() { 
         const { classes } = this.props;
@@ -152,8 +164,12 @@ class SingleCoffee  extends React.Component<SingleCoffeeProps, SingleCoffeeState
                     </CardContent>
                   </CardActionArea>
                   <CardActions>
-                    <Button size="small" color="primary">
-                      Share
+                    <Button
+                      size="small"
+                      color="primary"
+                      onClick={(e) => this.handleToggle(e)}
+                    >
+                      Write A Review
                     </Button>
                     <Button size="small" color="primary">
                       Learn More
@@ -162,6 +178,7 @@ class SingleCoffee  extends React.Component<SingleCoffeeProps, SingleCoffeeState
                 </Card>
               </Paper>
             </div>
+            <CoffeeForm open={this.state.open} onToggle={this.handleToggle} coffeeId={coffee.id}/>
           </div>
         );
     }
