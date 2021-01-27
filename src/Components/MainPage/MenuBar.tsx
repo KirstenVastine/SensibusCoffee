@@ -12,7 +12,6 @@ const styles = {
     link: {
         color: "white",
         textDecoration: "none"
-        
     }
 }
 type MenuBarProps = {

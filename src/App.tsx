@@ -30,6 +30,7 @@ import AppRoute from './Components/Layouts/AppRoute';
 import DefaultLayout from './Components/Layouts/DefaultLayout';
 import MainLayout from './Components/Layouts/MainLayout';
 import CoffeeForm from './Components/Superfluous/CoffeeForm';
+import LearnMore from './Components/MainPage/LearnMore';
 
 
 
@@ -127,6 +128,11 @@ class App extends React.Component {
                   <AppRoute
                     path="/coffeeform"
                     component={CoffeeForm}
+                    layout={MainLayout}
+                    />
+                    <AppRoute
+                    path="/LearnMore"
+                    component={LearnMore}
                     layout={MainLayout}
                     />
                   {/* <Auth /> */}
