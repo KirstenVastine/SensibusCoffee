@@ -18,6 +18,7 @@ import Typography from "@material-ui/core/Typography";
 import CoffeeForm from "../Superfluous/CoffeeForm";
 import Theme from "../../Theme";
 import NotFound from "../Superfluous/NotFound";
+import ReadReviews from './ReadReviews';
 
 // const styles = withStyles((theme:typeof Theme) =>
 //   createStyles({
@@ -48,7 +49,8 @@ const styles = {
     height: 140,
   },
   paperRoot: {
-    backgroundColor: "#1CD4D4",
+    // backgroundColor: "#1CD4D4",
+    backgroundColor: "whiteSmoke",
     padding: "20px",
     width: "100%",
     minHeight: "100%",
@@ -164,8 +166,15 @@ class SingleCoffee extends React.Component<
                   <Typography gutterBottom variant="h5" component="h2">
                     {coffee.coffeeOrigin}
                   </Typography>
-                  <Typography variant="body1" component="h2">Coffee Notes</Typography>
-                  <Typography gutterBottom variant="h5" color="textPrimary" component="p">
+                  <Typography variant="body1" component="h2">
+                    Coffee Notes
+                  </Typography>
+                  <Typography
+                    gutterBottom
+                    variant="h5"
+                    color="textPrimary"
+                    component="p"
+                  >
                     {coffee.coffeeNotes}
                   </Typography>
                   <Typography variant="body1" component="h2">
@@ -174,6 +183,9 @@ class SingleCoffee extends React.Component<
                   <Typography variant="h5" color="textPrimary" component="p">
                     {coffee.description}
                     {/* {coffee.imageURL} */}
+                  </Typography>
+                  <Typography variant="h5" color="textPrimary">
+                    {ReadReviews}
                   </Typography>
                 </CardContent>
               </CardActionArea>
