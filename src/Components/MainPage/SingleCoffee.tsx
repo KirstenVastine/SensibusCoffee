@@ -18,7 +18,7 @@ import Typography from "@material-ui/core/Typography";
 import CoffeeForm from "../Superfluous/CoffeeForm";
 import Theme from "../../Theme";
 import NotFound from "../Superfluous/NotFound";
-import ReadReviews from './ReadReviews';
+import ReadReviews from "./ReadReviews";
 
 // const styles = withStyles((theme:typeof Theme) =>
 //   createStyles({
@@ -120,14 +120,12 @@ class SingleCoffee extends React.Component<
           };
           const reviews = data.reviews;
           this.setState({ coffee, reviews });
-          console.log(coffee)
+          console.log(coffee);
           console.log(this.props);
         }
       })
       .catch((error) => console.log(error));
   }
-
-  
 
   handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {};
 
@@ -142,7 +140,7 @@ class SingleCoffee extends React.Component<
   render() {
     const { classes } = this.props;
     const { coffee } = this.state;
-    console.log('coffee', coffee)
+    console.log("coffee", coffee);
     return (
       <div>
         {/* <h1>
@@ -169,6 +167,7 @@ class SingleCoffee extends React.Component<
                   <Typography variant="body1" component="h2">
                     Coffee Notes
                   </Typography>
+                  {/* testing */}
                   <Typography
                     gutterBottom
                     variant="h5"
