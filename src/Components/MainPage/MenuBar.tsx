@@ -2,21 +2,19 @@ import * as React from "react";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import {withStyles} from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import { Link } from "@material-ui/core";
 
 const styles = {
-    root:{
-        color:"white"
-    },
-    link: {
-        color: "white",
-        textDecoration: "none"
-    }
-}
-type MenuBarProps = {
-    classes: any
+  root: {
+    color: "white",
+  },
+  link: {
+    color: "white",
+    textDecoration: "none",
+  },
 };
+type MenuBarProps = { classes?: any };
 
 type MenuBarState = {
   anchorEl: any;
@@ -34,7 +32,7 @@ class MenuBar extends React.Component<MenuBarProps, MenuBarState> {
     this.setState({ anchorEl: null });
   };
   render() {
-      const {classes} = this.props;
+    const { classes } = this.props;
     return (
       <div className={classes.root}>
         <Button
@@ -51,9 +49,17 @@ class MenuBar extends React.Component<MenuBarProps, MenuBarState> {
           open={this.state.anchorEl}
           onClose={this.handleClose}
         >
-          <MenuItem onClick={this.handleClose}><Link className={classes.link} href="/coffee">Coffees</Link></MenuItem>
+          <MenuItem onClick={this.handleClose}>
+            <Link className={classes.link} href="/coffee">
+              Coffees
+            </Link>
+          </MenuItem>
           <MenuItem onClick={this.handleClose}>My account</MenuItem>
-          <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+          <MenuItem onClick={this.handleClose}>
+            <Link className={classes.link} href="/logout">
+              Logout
+            </Link>
+          </MenuItem>
         </Menu>
       </div>
     );
@@ -61,4 +67,3 @@ class MenuBar extends React.Component<MenuBarProps, MenuBarState> {
 }
 
 export default withStyles(styles, { withTheme: true })(MenuBar);
-

@@ -1,21 +1,20 @@
-import React from 'react';
+import React from "react";
 import { withStyles, WithStyles, createStyles } from "@material-ui/core/styles";
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Link from "@material-ui/core/Link";
+import Paper from "@material-ui/core/Paper";
+import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Typography from "@material-ui/core/Typography";
 //import { makeStyles } from '@material-ui/core/styles';
 import API_URL from "../../environment";
-import { Styles } from '@material-ui/styles';
-
+import { Styles } from "@material-ui/styles";
 
 // const style = (theme:any) => createStyles ({
 //   root: {
@@ -73,24 +72,23 @@ const styles = (theme: any) =>
     },
   });
 
-  type Props = {
-    history: {
-        replace: Function;
-    },
-    styles: WithStyles,
-    classes: any
-    //WithStyles: Styles;
+type Props = {
+  history: {
+    replace: Function;
   };
+  styles: WithStyles;
+  classes: any;
+  //WithStyles: Styles;
+};
 
-  type States = {
-    //firstName: string;
-    //lastName: string;
-    email: string;
-    password: string;
-    sessionToken: string;
-    //signup: boolean;
-  };
-
+type States = {
+  //firstName: string;
+  //lastName: string;
+  email: string;
+  password: string;
+  sessionToken: string;
+  //signup: boolean;
+};
 
 //interface Props <typeof history> {}
 //interface Props extends WithStyles<typeof styles> {}
@@ -99,36 +97,25 @@ class ClassComponent extends React.Component<Props, States> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      // user: {
-      //firstName: "",
-      //lastName: "",
       email: "",
       password: "",
       sessionToken: "",
-      //signup: false,
-      // }
     };
   }
-
-//   state = {
-//     searchNodes: "",
-//   };
 
   handleSubmit = (event: any) => {
     event.preventDefault();
     console.log(typeof event);
-    
 
     const payLoad = {
-    //   firstName: this.state.firstName,
-    //   lastName: this.state.lastName,
-      email: this.state.email,
-      password: this.state.password,
+      user: {
+        email: this.state.email,
+        password: this.state.password,
+      },
     };
 
     fetch(`${API_URL}/user/login`, {
       method: "POST",
-      //mode:'no-cors',
       body: JSON.stringify(payLoad),
       headers: new Headers({
         "Content-Type": "application/json",
@@ -136,8 +123,7 @@ class ClassComponent extends React.Component<Props, States> {
     })
       .then((response) => response.json())
       .then((json) => {
-        if (json.message === "user was created successfully") {
-          // this.state.sessionToken(json)
+        if (json.status === 200) {
           localStorage.setItem("token", json.sessionToken);
           this.props.history.replace("/coffee");
         }
@@ -148,7 +134,7 @@ class ClassComponent extends React.Component<Props, States> {
   };
 
   handleChange = (event: any) => {
-      event.preventDefault();
+    event.preventDefault();
     const value = event.currentTarget.value;
     const state: any = { ...this.state };
     state[event.currentTarget.name] = value;
@@ -170,17 +156,17 @@ class ClassComponent extends React.Component<Props, States> {
   };
 
   Copyright = () => {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+    return (
+      <Typography variant="body2" color="textSecondary" align="center">
+        {"Copyright © "}
+        <Link color="inherit" href="https://material-ui.com/">
+          Your Website
+        </Link>{" "}
+        {new Date().getFullYear()}
+        {"."}
+      </Typography>
+    );
+  };
 
   render() {
     const { classes } = this.props;
@@ -193,8 +179,8 @@ class ClassComponent extends React.Component<Props, States> {
             <Typography component="h1" variant="h2">
               Sensibus Coffee
             </Typography>
-            <br/>
-            <br/>
+            <br />
+            <br />
             <Avatar className={classes.avatar}>
               <LockOutlinedIcon />
             </Avatar>
