@@ -13,6 +13,7 @@ import { HeadsetSharp } from "@material-ui/icons";
 import Snackbar from "@material-ui/core/Snackbar";
 import Slide, { SlideProps } from "@material-ui/core/Slide";
 import CustomSnackbar from "../Superfluous/CustomSnackbar";
+import { ReviewType } from "../../Utilities/types";
 
 type TransitionProps = Omit<SlideProps, "direction">;
 
@@ -33,20 +34,25 @@ function TransitionDown(props: TransitionProps) {
 }
 
 type States = {
-  rating: number,
-  hover: number,
-  reviewHeader: string,
-  reviewComment: string,
-  message: string,
-  severity: "success" | "warning" | "info" | "error" | undefined,
-  Open: any,
-  open: boolean,
-  Transition: any,
-  transition: any
+  rating: number;
+  hover: number;
+  reviewHeader: string;
+  reviewComment: string;
+  message: string;
+  severity: "success" | "warning" | "info" | "error" | undefined;
+  Open: any;
+  open: boolean;
+  Transition: any;
+  transition: any;
 };
 
 type Props = {
-  coffeeId: number
+  open: boolean;
+  coffeeId: number;
+  review: ReviewType;
+  onToggle: Function;
+  onChange: Function;
+  onSubmit: Function;
 
   //TransitionProps: any;
   //SlideProps: "direction";
@@ -79,8 +85,8 @@ class ReviewForm extends React.Component<Props, States> {
       open: true,
       Transition: TransitionDown,
       transition: "",
-      message:'',
-      severity: undefined
+      message: "",
+      severity: undefined,
     };
   }
 
@@ -132,7 +138,7 @@ class ReviewForm extends React.Component<Props, States> {
         reviewHeader: this.state.reviewHeader,
         reviewComment: this.state.reviewComment,
         rating: this.state.rating,
-        coffeeId: 2, // this.props.coffeeId
+        coffeeId: this.props.coffeeId,
       }),
       headers: headers,
     })
@@ -143,9 +149,11 @@ class ReviewForm extends React.Component<Props, States> {
         if (review.status === 200) {
           //successful. where to now?
 
-          this.setState({open: true,
-          severity : "success",
-        message: "It worked"})
+          this.setState({
+            open: true,
+            severity: "success",
+            message: "It worked",
+          });
         }
 
         // if you get here, then the request failed
@@ -163,16 +171,8 @@ class ReviewForm extends React.Component<Props, States> {
     // celebrate with a dance
   };
 
-  handleChange = (event: any) => {
-    const value = event.currentTarget.value;
-    const state: any = { ...this.state };
-    state[event.currentTarget.name] = value;
-    this.setState(state);
-  };
-
-
   handleClose = () => {
-    this.setState({open: false});
+    this.setState({ open: false });
   };
 
   //Check about onClose
@@ -185,7 +185,7 @@ class ReviewForm extends React.Component<Props, States> {
     return (
       <div className="reviewFormCard">
         <div>
-          <form onSubmit={(e: any) => this.handleSubmit(e)}>
+          <form onSubmit={(e: any) => this.props.onSubmit(e)}>
             <Card className={classes.root}>
               <CardContent>
                 <Typography variant="h6" component="h5">
@@ -196,8 +196,8 @@ class ReviewForm extends React.Component<Props, States> {
                     name="rating"
                     value={this.state.rating}
                     precision={0.5}
-                    onChange={(e) => this.handleChange(e)}
-                    onChangeActive={(e) => this.handleChange(e)}
+                    onChange={(e) => this.props.onChange(e)}
+                    onChangeActive={(e) => this.props.onChange(e)}
                   />
                   {this.state.rating !== null && (
                     <Box ml={2}>
@@ -225,7 +225,7 @@ class ReviewForm extends React.Component<Props, States> {
                   label="Header"
                   type="text"
                   variant="outlined"
-                  onChange={(e) => this.handleChange(e)}
+                  onChange={(e) => this.props.onChange(e)}
                   size="medium"
                 />
 
@@ -239,7 +239,7 @@ class ReviewForm extends React.Component<Props, States> {
                   rows={4}
                   name="reviewComment"
                   variant="outlined"
-                  onChange={(e) => this.handleChange(e)}
+                  onChange={(e) => this.props.onChange(e)}
                 />
 
                 <Typography variant="body2" component="p"></Typography>

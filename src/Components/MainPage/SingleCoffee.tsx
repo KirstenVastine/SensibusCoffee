@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -21,6 +22,7 @@ import NotFound from "../Superfluous/NotFound";
 import ReadReviews from "./ReadReviews";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
 //import ImageList from '@material-ui/core/ImageList';
 //import ImageListItem from '@material-ui/core/ImageListItem';
 
@@ -162,83 +164,67 @@ class SingleCoffee extends React.Component<
             </h1> */}
         <React.Fragment>
           <CssBaseline />
-          <Container maxWidth="lg">
-            <Typography
-              component="div"
-              style={{ backgroundColor: "#cfe8fc", height: "100vh" }}
-            >
-              {/* <div className={classes.root}> */}
-              {/* <Paper elevation={3} className={classes.paperRoot}> */}
-              <Card className={classes.cardRoot}>
-                {/* <CardActionArea> */}
-                <CardMedia
-                  //className={classes.cardMedia}
-                  image={coffee.imageURL}
-                  title={coffee.coffeeOrigin}
-                  component="img"
-                  height="600"
-                />
 
-                <CardContent>
-                  <Typography variant="body1" component="h2">
-                    Coffee Origin
-                  </Typography>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {coffee.coffeeOrigin}
-                  </Typography>
-                  <Typography variant="body1" component="h2">
-                    Coffee Notes
-                  </Typography>
-                  {/* testing */}
-                  <Typography
-                    gutterBottom
-                    variant="h5"
-                    color="textPrimary"
-                    component="p"
-                  >
-                    {coffee.coffeeNotes}
-                  </Typography>
+          {/* <div className={classes.root}> */}
+          {/* <Paper elevation={3} className={classes.paperRoot}> */}
+          <Card className={classes.cardRoot}>
+            <CardHeader title={coffee.coffeeOrigin} subheader="" />
+            <CardMedia
+              //className={classes.cardMedia}
+              image={coffee.imageURL}
+              title={coffee.coffeeOrigin}
+              component="img"
+              height="200"
+            />
+
+            <CardContent>
+              <Grid container spacing={3}>
+                <Grid item xs={6}>
+                  <div>
+                    <Typography variant="body1" component="h2">
+                      Coffee Notes
+                    </Typography>
+
+                    {/* testing */}
+                    <Typography
+                      gutterBottom
+                      variant="h5"
+                      color="textPrimary"
+                      component="p"
+                    >
+                      {coffee.coffeeNotes}
+                    </Typography>
+                  </div>
+                </Grid>
+                <Grid item xs={6}>
+                  <div>
                   <Typography variant="body1" component="h2">
                     Description
                   </Typography>
                   <Typography variant="h5" color="textPrimary" component="p">
                     {coffee.description}
                   </Typography>
-                  <Typography variant="h5" color="textPrimary">
-                    {ReadReviews}
-                  </Typography>
-                  <Typography>{this.props.ReadReviews}</Typography>
-                </CardContent>
-                {/* </CardActionArea> */}
-                {/* <CardActions> */}
-                <br />
-                <br />
-                <Button
-                  size="small"
-                  color="primary"
-                  onClick={(e) => this.handleToggle(e)}
-                >
-                  Write A Review
-                </Button>
-                <span> </span>
-                <Button
-                  size="small"
-                  color="primary"
-                  //onClick={(e) => this.handleDescriptionToggle(coffee.id)}
-                >
-                  Learn More
-                </Button>
-                {/* </CardActions> */}
-              </Card>
-              {/* </Paper> */}
-              {/* </div> */}
-              <CoffeeForm
-                open={this.state.open}
-                onToggle={this.handleToggle}
-                coffeeId={coffee.id}
-              />
-            </Typography>
-          </Container>
+                </div>
+                </Grid>
+              </Grid>
+            
+              <Button
+                size="small"
+                color="primary"
+                onClick={(e) => this.handleToggle(e)}
+              >
+                Write A Review
+              </Button>
+              <ReadReviews coffeeId={coffee.id} />
+            </CardContent>
+            <br />
+            <br />
+          </Card>
+          <CoffeeForm
+            open={this.state.open}
+            onToggle={this.handleToggle}
+            coffeeId={coffee.id}
+          />
         </React.Fragment>
       </div>
     );
