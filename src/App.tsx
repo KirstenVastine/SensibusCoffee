@@ -130,7 +130,7 @@ class App extends React.Component {
                     layout={MainLayout}
                   />
                   <Route path="/">
-                     <Redirect to="/login" />
+                     <Redirect to="/coffee" />
                   </Route>
                   <Redirect from="/" exact to="/coffee" />
                   <Redirect to="/notfound" />
