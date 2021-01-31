@@ -129,6 +129,9 @@ class App extends React.Component {
                     component={NotFound}
                     layout={MainLayout}
                   />
+                  <Route path="/">
+                     <Redirect to="/login" />
+                  </Route>
                   <Redirect from="/" exact to="/coffee" />
                   <Redirect to="/notfound" />
                 </Switch>
