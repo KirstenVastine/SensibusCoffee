@@ -75,7 +75,6 @@ class ClassComponent extends React.Component<Props, States> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      //user: {
       firstName: "",
       lastName: "",
       email: "",
@@ -84,10 +83,6 @@ class ClassComponent extends React.Component<Props, States> {
       signup: false,
       }
     };
-//   }
-//   state = {
-//     searchNodes: "",
-//   };
 
 handleSubmit = (event: any) => {
     event.preventDefault();
@@ -103,7 +98,6 @@ handleSubmit = (event: any) => {
 
     fetch(`${API_URL}/user/signup`, {
       method: 'POST',
-      //mode:'no-cors',
       body: JSON.stringify(payLoad),
       headers: new Headers({
         'Content-Type': 'application/json'
@@ -112,8 +106,7 @@ handleSubmit = (event: any) => {
       (response) => response.json()
 
     ).then((json) => {
-      if (json.message === "user was created successfully") {
-        // this.state.sessionToken(json)
+      if (json.status === 200) {
         localStorage.setItem('token', json.sessionToken);
         this.props.history.replace('/coffee');
       }

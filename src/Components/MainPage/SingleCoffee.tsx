@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -18,7 +19,12 @@ import Typography from "@material-ui/core/Typography";
 import CoffeeForm from "../Superfluous/CoffeeForm";
 import Theme from "../../Theme";
 import NotFound from "../Superfluous/NotFound";
-import ReadReviews from './ReadReviews';
+import ReadReviews from "./ReadReviews";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
+//import ImageList from '@material-ui/core/ImageList';
+//import ImageListItem from '@material-ui/core/ImageListItem';
 
 // const styles = withStyles((theme:typeof Theme) =>
 //   createStyles({
@@ -42,11 +48,11 @@ const styles = {
     minHeight: "160px",
   },
   cardRoot: {
-    maxWidth: 345,
+    maxWidth: 750,
     margin: "40px auto",
   },
   cardMedia: {
-    height: 140,
+    height: 90,
   },
   paperRoot: {
     // backgroundColor: "#1CD4D4",
@@ -58,12 +64,17 @@ const styles = {
   },
 };
 
-type SingleCoffeeProps = WithStyles<typeof styles> & {
+// type SingleCoffeeProps = WithStyles<typeof styles> & {
+type SingleCoffeeProps = {
   location: any;
   match: any;
   history: any;
   data: any;
+  classes: any;
+  ReadReviews: any;
 };
+
+//make coffeeId as a prop.
 
 type SingleCoffeeState = {
   coffee: singleCoffee;
@@ -120,19 +131,21 @@ class SingleCoffee extends React.Component<
           };
           const reviews = data.reviews;
           this.setState({ coffee, reviews });
-          console.log(coffee)
+          console.log(coffee);
           console.log(this.props);
         }
       })
       .catch((error) => console.log(error));
   }
 
-  
-
   handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {};
 
   handleToggle = (event: React.SyntheticEvent): void => {
     this.setState({ open: !this.state.open });
+  };
+
+  showReviews = (allReviews: any, coffeeId: number) => {
+    this.props.history.push(`/review/allreviews/${coffeeId}`);
   };
 
   // handleDescriptionToggle = (coffeeId: number) => {
@@ -142,77 +155,77 @@ class SingleCoffee extends React.Component<
   render() {
     const { classes } = this.props;
     const { coffee } = this.state;
-    console.log('coffee', coffee)
+    console.log("coffee", coffee);
     return (
       <div>
         {/* <h1>
               Coffee is the best!!!
               {this.props.match.params.coffeeId}
             </h1> */}
+        <React.Fragment>
+          <CssBaseline />
 
-        <div className={classes.root}>
-          <Paper elevation={3} className={classes.paperRoot}>
-            <Card className={classes.cardRoot}>
-              <CardActionArea>
-                <CardMedia
-                  className={classes.cardMedia}
-                  image={coffee.imageURL}
-                  title={coffee.coffeeOrigin}
-                />
-                <CardContent>
-                  <Typography variant="body1" component="h2">
-                    Coffee Origin
-                  </Typography>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {coffee.coffeeOrigin}
-                  </Typography>
-                  <Typography variant="body1" component="h2">
-                    Coffee Notes
-                  </Typography>
-                  <Typography
-                    gutterBottom
-                    variant="h5"
-                    color="textPrimary"
-                    component="p"
-                  >
-                    {coffee.coffeeNotes}
-                  </Typography>
+          {/* <div className={classes.root}> */}
+          {/* <Paper elevation={3} className={classes.paperRoot}> */}
+          <Card className={classes.cardRoot}>
+            <CardHeader title={coffee.coffeeOrigin} subheader="" />
+            <CardMedia
+              //className={classes.cardMedia}
+              image={coffee.imageURL}
+              title={coffee.coffeeOrigin}
+              component="img"
+              height="200"
+            />
+
+            <CardContent>
+              <Grid container spacing={3}>
+                <Grid item xs={6}>
+                  <div>
+                    <Typography variant="body1" component="h2">
+                      Coffee Notes
+                    </Typography>
+
+                    {/* testing */}
+                    <Typography
+                      gutterBottom
+                      variant="h5"
+                      color="textPrimary"
+                      component="p"
+                    >
+                      {coffee.coffeeNotes}
+                    </Typography>
+                  </div>
+                </Grid>
+                <Grid item xs={6}>
+                  <div>
                   <Typography variant="body1" component="h2">
                     Description
                   </Typography>
                   <Typography variant="h5" color="textPrimary" component="p">
                     {coffee.description}
-                    {/* {coffee.imageURL} */}
                   </Typography>
-                  <Typography variant="h5" color="textPrimary">
-                    {ReadReviews}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <CardActions>
-                <Button
-                  size="small"
-                  color="primary"
-                  onClick={(e) => this.handleToggle(e)}
-                >
-                  Write A Review
-                </Button>
-                {/* <Button
-                  size="small"
-                  color="primary"
-                  //onClick={(e) => this.handleDescriptionToggle(coffee.id)}
-                >
-                  Learn More
-                </Button> */}
-              </CardActions>
-            </Card>
-          </Paper>
-        </div>
-        <CoffeeForm
-          open={this.state.open}
-          onToggle={this.handleToggle}
-          coffeeId={coffee.id}
-        />
+                </div>
+                </Grid>
+              </Grid>
+            
+              <Button
+                size="small"
+                color="primary"
+                onClick={(e) => this.handleToggle(e)}
+              >
+                Write A Review
+              </Button>
+              <ReadReviews coffeeId={coffee.id} />
+            </CardContent>
+            <br />
+            <br />
+          </Card>
+          <CoffeeForm
+            open={this.state.open}
+            onToggle={this.handleToggle}
+            coffeeId={coffee.id}
+          />
+        </React.Fragment>
       </div>
     );
   }

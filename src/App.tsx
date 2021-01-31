@@ -18,7 +18,7 @@ import theme from "../src/Theme";
  import Auth from './Components/Auth/Auth';
 // import Reviews from '../src/Components/MainPage/Reviews';
 // import ReviewForm from './Components/MainPage/ReviewForm';
-// import NotFound from './Components/Superfluous/NotFound';
+import NotFound from './Components/Superfluous/NotFound';
 
 import SignupTwo from './Components/Auth/SignupTwo';
 import ReviewForm from './Components/MainPage/ReviewForm';
@@ -31,6 +31,8 @@ import DefaultLayout from './Components/Layouts/DefaultLayout';
 import MainLayout from './Components/Layouts/MainLayout';
 import CoffeeForm from './Components/Superfluous/CoffeeForm';
 import LearnMore from './Components/MainPage/LearnMore';
+import ReadReviews from './Components/MainPage/ReadReviews';
+import Logout from './Components/Layouts/Logout';
 
 
 
@@ -70,25 +72,8 @@ class App extends React.Component {
 
           <div>
             <header>
-              {/* <img src={logo} className="App-logo" alt="logo" /> */}
-              {/* <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p> */}
-              {/* <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a> */}
               <Router>
-                {/* <MenuBar /> */}
                 <Switch>
-                  {/* <Route path="/login/:name/:age" component={Auth} />
-                  <Route path="/login" component={Login} /> */}
-                  {/* <Route path="/signup" component={Auth} /> */}
-                  {/* <Route path="/review/add" component={ReviewForm} /> */}
                   <AppRoute
                     path="/coffee/:coffeeId"
                     component={SingleCoffee}
@@ -109,17 +94,16 @@ class App extends React.Component {
                     layout={MainLayout}
                   />
 
-                  {/* <Route path="/notfound" component={NotFound} /> */}
-                  {/* <Route path="/" exact component={Auth} /> */}
-                  {/* <Redirect from='/' exact to='/signup' /> */}
-                  {/* <Redirect to="/notfound" /> */}
-                  {/* <Route path="/signup" component={SignupTwo} /> */}
                   <AppRoute
                     component={TestMUI}
                     path="/login"
                     layout={DefaultLayout}
                   />
-                  {/* <Route path="/login" component={TestMUI} /> */}
+                  <AppRoute
+                    component={Logout}
+                    path="/logout"
+                    layout={DefaultLayout}
+                  />
                   <AppRoute
                     path="/signup"
                     component={TestMuiSignup}
@@ -129,23 +113,27 @@ class App extends React.Component {
                     path="/coffeeform"
                     component={CoffeeForm}
                     layout={MainLayout}
-                    />
-                    <AppRoute
+                  />
+                  <AppRoute
                     path="/LearnMore"
                     component={LearnMore}
                     layout={MainLayout}
-                    />
-                  {/* <Auth /> */}
-                  {/* <Login /> */}
-                  {/* <Coffee
-            coffeeOrigin = 'coffee'
-            coffeeNotes = 'notes'
-            price = 'price'
-            description = 'desc'
-            updateToken = {() => console.log('updateToken')}
-            classes = ''
-            /> */}
-                  {/* <Reviews/> */}
+                  />
+                  <AppRoute
+                    path="/allreviews/:coffeeId"
+                    component={ReadReviews}
+                    layout={MainLayout}
+                  />
+                  <AppRoute
+                    path="/notfound"
+                    component={NotFound}
+                    layout={MainLayout}
+                  />
+                  <Route path="/">
+                     <Redirect to="/coffee" />
+                  </Route>
+                  <Redirect from="/" exact to="/coffee" />
+                  <Redirect to="/notfound" />
                 </Switch>
               </Router>
             </header>
