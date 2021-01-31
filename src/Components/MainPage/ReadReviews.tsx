@@ -287,14 +287,14 @@ class ReadReviews extends React.Component<ReadReviewsProps, ReadReviewsState> {
             )}
           </Paper>
         </Container>
-        <ReviewForm
+        {/* <ReviewForm
           open={this.state.showEdit}
           coffeeId={this.state.selectedReview.coffeeId}
           review={this.state.selectedReview}
           onToggle={this.handleToggleEdit}
           onChange={this.handleChange}
           onSubmit={this.handleUpdateSubmit}
-        />
+        /> */}
       </React.Fragment>
     );
   }

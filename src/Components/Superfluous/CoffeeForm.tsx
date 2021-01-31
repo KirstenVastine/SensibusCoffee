@@ -75,14 +75,15 @@ class CoffeeForm extends React.Component<CoffeeFormProps, CoffeeFormState> {
 
     return (
       <div>
-        <Modal
+      <Modal
+    
           open={this.props.open}
           onClose={this.props.onToggle}
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
         >
-          
-            <ReviewForm coffeeId={this.props.coffeeId} />
+          <h1>Under construction</h1>
+            {/* <ReviewForm coffeeId={this.props.coffeeId} /> */}
           
         </Modal>
       </div>
