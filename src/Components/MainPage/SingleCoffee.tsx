@@ -207,24 +207,16 @@ class SingleCoffee extends React.Component<
                 </div>
                 </Grid>
               </Grid>
-            
-              <Button
-                size="small"
-                color="primary"
-                onClick={(e) => this.handleToggle(e)}
-              >
-                Write A Review
-              </Button>
               <ReadReviews coffeeId={coffee.id} />
             </CardContent>
             <br />
             <br />
           </Card>
-          <CoffeeForm
+          {/* <CoffeeForm
             open={this.state.open}
             onToggle={this.handleToggle}
             coffeeId={coffee.id}
-          />
+          /> */}
         </React.Fragment>
       </div>
     );

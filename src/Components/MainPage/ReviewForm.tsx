@@ -14,6 +14,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import Slide, { SlideProps } from "@material-ui/core/Slide";
 import CustomSnackbar from "../Superfluous/CustomSnackbar";
 import { ReviewType } from "../../Utilities/types";
+import Modal from "@material-ui/core/Modal";
 
 type TransitionProps = Omit<SlideProps, "direction">;
 
@@ -50,7 +51,9 @@ type Props = {
   open: boolean;
   coffeeId: number;
   review: ReviewType;
-  onToggle: Function;
+  onToggle:
+    | ((event: {}, reason: "backdropClick" | "escapeKeyDown") => void)
+    | undefined;
   onChange: Function;
   onSubmit: Function;
 
@@ -124,52 +127,6 @@ class ReviewForm extends React.Component<Props, States> {
       })
     );
 
-  handleSubmit = (e: any) => {
-    e.preventDefault();
-    console.log(this.state);
-
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("Authorization", localStorage.getItem("token") || "");
-
-    fetch(`${API_URL}/review/review`, {
-      method: "POST",
-      body: JSON.stringify({
-        reviewHeader: this.state.reviewHeader,
-        reviewComment: this.state.reviewComment,
-        rating: this.state.rating,
-        coffeeId: this.props.coffeeId,
-      }),
-      headers: headers,
-    })
-      .then((res) => res.json())
-      .then((review) => {
-        console.log(review);
-
-        if (review.status === 200) {
-          //successful. where to now?
-
-          this.setState({
-            open: true,
-            severity: "success",
-            message: "It worked",
-          });
-        }
-
-        // if you get here, then the request failed
-        // do som'n
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    // create the request body
-
-    // do fetch request
-
-    // get response and test it for success
-
-    // celebrate with a dance
-  };
 
   handleClose = () => {
     this.setState({ open: false });
@@ -183,7 +140,13 @@ class ReviewForm extends React.Component<Props, States> {
     //<Slide {...this.props} direction="down" />;
 
     return (
-      <div className="reviewFormCard">
+     <Modal
+          open={this.props.open}
+          onClose={this.props.onToggle}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+        >
+     <div className="reviewFormCard">
         <div>
           <form onSubmit={(e: any) => this.props.onSubmit(e)}>
             <Card className={classes.root}>
@@ -194,7 +157,7 @@ class ReviewForm extends React.Component<Props, States> {
                 <div className={classes.starRating}>
                   <Rating
                     name="rating"
-                    value={this.state.rating}
+                    value={this.props.review.rating}
                     precision={0.5}
                     onChange={(e) => this.props.onChange(e)}
                     onChangeActive={(e) => this.props.onChange(e)}
@@ -227,6 +190,7 @@ class ReviewForm extends React.Component<Props, States> {
                   variant="outlined"
                   onChange={(e) => this.props.onChange(e)}
                   size="medium"
+                  value={this.props.review.reviewHeader}
                 />
 
                 <Typography variant="h6" component="h2">
@@ -240,6 +204,7 @@ class ReviewForm extends React.Component<Props, States> {
                   name="reviewComment"
                   variant="outlined"
                   onChange={(e) => this.props.onChange(e)}
+                  value={this.props.review.reviewComment}
                 />
 
                 <Typography variant="body2" component="p"></Typography>
@@ -261,6 +226,7 @@ class ReviewForm extends React.Component<Props, States> {
           </form>
         </div>
       </div>
+    </Modal>
     );
   }
 }

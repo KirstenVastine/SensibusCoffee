@@ -29,6 +29,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { Edit } from "@material-ui/icons";
 import CoffeeForm from "../Superfluous/CoffeeForm";
 import ReviewForm from "./ReviewForm";
+import DeleteForm from "../Superfluous/DeleteForm";
 
 export type ReadReviewsProps = {
   classes?: any;
@@ -40,6 +41,7 @@ export type ReadReviewsState = {
   selectedReview: ReviewType;
   showEdit: boolean;
   showDelete: boolean;
+  reload:boolean;
 };
 
 type singleCoffeeReviews = {
@@ -93,6 +95,7 @@ class ReadReviews extends React.Component<ReadReviewsProps, ReadReviewsState> {
       selectedReview: ReviewDefaultObject,
       showDelete: false,
       showEdit: false,
+      reload:false,
     };
   }
 
@@ -127,7 +130,7 @@ class ReadReviews extends React.Component<ReadReviewsProps, ReadReviewsState> {
           console.log("setting review state");
           console.log("fetch reviews was successful!!");
           console.log(readReviewsResponse);
-          this.setState({ reviews });
+          this.setState({ reviews,reload:false });
         }
       })
       .catch((error) => console.log(error));
@@ -137,6 +140,11 @@ class ReadReviews extends React.Component<ReadReviewsProps, ReadReviewsState> {
     this.setState({ selectedReview });
   };
 
+  handleCreateClick = (): void => {
+    this.handleSelectReview(ReviewDefaultObject);
+    this.handleToggleEdit();
+  };
+
   handleToggleEdit = (): void => {
     this.setState({ showEdit: !this.state.showEdit });
   };
@@ -144,6 +152,8 @@ class ReadReviews extends React.Component<ReadReviewsProps, ReadReviewsState> {
   handleToggleDelete = (): void => {
     this.setState({ showDelete: !this.state.showDelete });
   };
+
+
 
   handleEditClick = (review: ReviewType): void => {
     this.handleSelectReview(review);
@@ -161,9 +171,44 @@ class ReadReviews extends React.Component<ReadReviewsProps, ReadReviewsState> {
     const value = event.currentTarget.value;
     const selectedReview: any = { ...this.state.selectedReview };
     selectedReview[event.currentTarget.name as ReviewFormField] = value;
-    this.setState(selectedReview);
+      this.setState({selectedReview});
   };
 
+handleSubmitDelete = (e: any): void => {
+    e.preventDefault();
+    console.log(this.state);
+
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Authorization", localStorage.getItem("token") || "");
+
+    fetch(`${API_URL}/review/delete/${this.state.selectedReview.id}`, {
+      method: "DELETE",
+      headers
+    })
+    .then((res) => res.json())
+      .then((review) => {
+        console.log(review);
+
+        if (review.status === 200) {
+          //successful. where to now?
+
+          this.setState({
+            showEdit: false,
+            showDelete: false,
+            reload: true,
+            //severity: "success",
+            //message: "It worked",
+          });
+        }
+
+        // if you get here, then the request failed
+        // do som'n
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
   handleUpdateSubmit = (e: any) => {
     e.preventDefault();
     console.log(this.state);
@@ -172,8 +217,8 @@ class ReadReviews extends React.Component<ReadReviewsProps, ReadReviewsState> {
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", localStorage.getItem("token") || "");
 
-    fetch(`${API_URL}/review/review`, {
-      method: "POST",
+    fetch(`${API_URL}/review/update/${this.state.selectedReview.id}`, {
+      method: "PUT",
       body: JSON.stringify({
         reviewHeader: this.state.selectedReview.reviewHeader,
         reviewComment: this.state.selectedReview.reviewComment,
@@ -190,7 +235,9 @@ class ReadReviews extends React.Component<ReadReviewsProps, ReadReviewsState> {
           //successful. where to now?
 
           this.setState({
-            showEdit: true,
+            showEdit: false,
+            showDelete: false,
+            reload: true,
             //severity: "success",
             //message: "It worked",
           });
@@ -211,6 +258,54 @@ class ReadReviews extends React.Component<ReadReviewsProps, ReadReviewsState> {
     // celebrate with a dance
   };
 
+  handleCreateSubmit = (e: any) => {
+    e.preventDefault();
+    console.log(this.state);
+
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Authorization", localStorage.getItem("token") || "");
+
+    fetch(`${API_URL}/review/review`, {
+      method: "POST",
+      body: JSON.stringify({
+        reviewHeader: this.state.selectedReview.reviewHeader,
+        reviewComment: this.state.selectedReview.reviewComment,
+        rating: this.state.selectedReview.rating,
+        coffeeId: this.props.coffeeId,
+      }),
+      headers: headers,
+    })
+      .then((res) => res.json())
+      .then((review) => {
+        console.log(review);
+
+        if (review.status === 200) {
+          //successful. where to now?
+
+          this.setState({
+            showEdit: false,
+            showDelete: false,
+            reload: true,
+            //severity: "success",
+            //message: "It worked",
+          });
+        }
+
+        // if you get here, then the request failed
+        // do som'n
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    // create the request body
+
+    // do fetch request
+
+    // get response and test it for success
+
+    // celebrate with a dance
+  };
 
   componentDidMount() {
     console.log("mounting ...with coffeeId:", this.props.coffeeId);
@@ -221,6 +316,8 @@ class ReadReviews extends React.Component<ReadReviewsProps, ReadReviewsState> {
     if (prevProps.coffeeId !== this.props.coffeeId) {
       this.fetchData();
     }
+
+    if(this.state.reload) this.fetchData();
   }
   render() {
     console.log("rendering review component");
@@ -229,6 +326,9 @@ class ReadReviews extends React.Component<ReadReviewsProps, ReadReviewsState> {
     return (
       <React.Fragment>
         <CssBaseline />
+        <Button size="small" color="primary" onClick={this.handleCreateClick}>
+          Write A Review
+        </Button>
         <Container maxWidth="md">
           <Paper component="div" className={classes.paper}>
             {reviews.length > 0 ? (
@@ -287,14 +387,19 @@ class ReadReviews extends React.Component<ReadReviewsProps, ReadReviewsState> {
             )}
           </Paper>
         </Container>
-        {/* <ReviewForm
+        <ReviewForm
           open={this.state.showEdit}
           coffeeId={this.state.selectedReview.coffeeId}
           review={this.state.selectedReview}
           onToggle={this.handleToggleEdit}
           onChange={this.handleChange}
-          onSubmit={this.handleUpdateSubmit}
-        /> */}
+          onSubmit={
+            this.state.selectedReview.coffeeId === 0
+              ? this.handleCreateSubmit
+              : this.handleUpdateSubmit
+          }
+        />
+        <DeleteForm open={this.state.showDelete} onToggle={this.handleToggleDelete} onSubmit={this.handleSubmitDelete}/>
       </React.Fragment>
     );
   }
