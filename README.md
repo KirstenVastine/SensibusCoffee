@@ -1,4 +1,44 @@
-# Getting Started with Create React App
+
+
+# Welcome to Sensibus Coffee App
+----------------------------
+* heighten your senses *
+by **Kirsten Vastine**
+
+## Introduction
+Sensibus Coffee App is meant to help coffee lovers with a highly developed taste in the wonderful beans we know and love discover new origins to enjoy every day. Sensibus Coffee is a local roastery in Frankfort, KY bringing small batch organic coffee from around the world to you.
+
+### Built with
+--------------
+1. Node: Used for the server application build
+2. React: Incorporated in the frontend build
+3. Material UI: Used for application design/styling which gave it the professional look.
+
+## Project Planning:
+Initial stages of the project was spent carefully planning the details using Trello on a high level. This was then layed out in lucid to provide a more detailed structure and allow us to see the flow of information from the server-side to the frontend and vice versa. Figma was incorporated to provide the mockup for all our app pages. Links to our project planning, diagrams and flowchart are listed below this page.
+
+## Project Setup and Key Features
+The server side with a total of 7 endpoints was first built out. This was made up of two user endpoints(login and signup) and 5 profile endpoints(create profile, view profile by id, view profile by name, update and delete). Verification and creation of tokens and JWT_SECRET were incorporated to improve the security of the application and minimize unauthorized processes on the app. 
+
+The signin and signup section allows a user to log into th app.
+The profile section is completed by the user and information from this section is collected and stored in postgres database. This is used along with logic in matching our user to the perfect date.
+The update profile functionality  allows the user to make changes to their profile.
+A user who decides to opt out of the dating app has the ability to delete their information from the applicaton. This functionality automatically logs out the user. This is an added security measure we incorporated to ensure that non-users do not have the ability to see or search profiles of other users.
+
+### Coding fact/Things you will notice
+Spread throughout the app you will notice React class components and typescript.  
+```
+````
+``` 
+
+
+
+
+
+
+
+
+<!-- # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -43,4 +83,4 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+To learn React, check out the [React documentation](https://reactjs.org/). -->
